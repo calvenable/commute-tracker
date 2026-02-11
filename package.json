@@ -1,6 +1,5 @@
 {
   "name": "commute-tracker",
-  "homepage": "https://calvenable.github.io/commute-tracker/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

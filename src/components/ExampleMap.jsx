@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   MapContainer,
   TileLayer,
-  Marker,
   Polyline,
   Circle
 } from "react-leaflet";

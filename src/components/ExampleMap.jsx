@@ -39,7 +39,7 @@ export default function RunTrackerMap() {
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
-  if (!position) return <p>Locating user…</p>;
+  if (!position) return <p>Getting your GPS location...</p>;
 
   return (
     <MapContainer
@@ -47,25 +47,29 @@ export default function RunTrackerMap() {
       zoom={16}
       style={{ height: "400px", width: "100%" }}
     >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="&copy; OpenStreetMap contributors"
-      />
+		<TileLayer
+			url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+			attribution="&copy; OpenStreetMap contributors"
+		/>
 
-      {/* User marker */}
-      <Marker position={position} />
+		{/* User's current location */}
+		<Circle
+			center={position}
+			radius={6}
+			color="blue"
+			fillColor="blue"
+			fillOpacity={1}
+		/>
 
-      {/* Route polyline */}
-      <Polyline positions={route} color="blue" weight={4} />
+		<Circle
+			center={position}
+			radius={12}
+			color="blue"
+		/>
 
-      {/* Example “sector zone” */}
-      <Circle
-        center={route[0]} // Starting point
-        radius={40}       // 40m sector
-        color="green"
-        fillColor="lightgreen"
-        fillOpacity={0.4}
-      />
+		{/* Route polyline */}
+		<Polyline positions={route} color="blue" weight={5} />
+		
     </MapContainer>
   );
 }

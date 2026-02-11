@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import ExampleMap from './components/ExampleMap';
 import "leaflet/dist/leaflet.css";

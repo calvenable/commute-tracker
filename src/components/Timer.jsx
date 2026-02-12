@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 
 const STATUS = {
     pause: 0,
@@ -6,46 +6,33 @@ const STATUS = {
   }
 
 export default function ShowTimer() {
-    const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
     const [timerState, setTimerState] = useState(STATUS.pause);
-    const intervalRef = useRef();
+    const [timerInterval, setTimerInterval] = useState(null);
 
     const toggleTimer = () => {
         switch (timerState) {
             case STATUS.pause:
                 setTimerState(STATUS.running);
+                setTimerInterval(setInterval(() => {
+                    setSeconds(sec => sec + 1);
+                }, 1000));
                 break;
             case STATUS.running:
                 setTimerState(STATUS.pause);
+                clearInterval(timerInterval);
                 break;
             default:
                 break;
         }
     }
 
-    useEffect(() => {
-        if(timerState === STATUS.running){
-          intervalRef.current = setInterval(() => {
-            // Add one second to the timer
-            if (seconds < 59) {
-                setSeconds(sec => sec + 1);
-            }
-            else {
-                setSeconds(0);
-                setMinutes(min => min + 1);
-            }
-          }, 1000);
-        } else if(timerState === STATUS.pause && intervalRef.current){
-          clearInterval(intervalRef.current)
-        }
-        return () => {
-          clearInterval(intervalRef.current)
-        };
-      }, [minutes, seconds, timerState]);
+    const calculatedSeconds = seconds % 60;
+    const calculatedMinutes = (seconds - calculatedSeconds) / 60;
 
-    const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    const displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
+    const displaySeconds = calculatedSeconds < 10 ? `0${calculatedSeconds}` : calculatedSeconds;
+    const displayMinutes = calculatedMinutes < 10 ? `0${calculatedMinutes}` : calculatedMinutes;
+
     const timerButtonDisplay = timerState === STATUS.running ? "Stop" : "Start";
 
     return (

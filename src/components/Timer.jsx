@@ -34,7 +34,7 @@ export default function ShowTimer() {
     const displayMinutes = calculatedMinutes < 10 ? `0${calculatedMinutes}` : calculatedMinutes;
 
     const timerButtonDisplay = timerState === STATUS.running ? "Stop" : "Start";
-    const timerButtonClass = "timer-btn"
+    const timerButtonClass = "no-select timer-btn"
         + (timerState === STATUS.running ? " timer-stop" : "")
         + (timerState === STATUS.pause ? " timer-start" : "")
 

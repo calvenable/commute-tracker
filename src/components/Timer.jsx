@@ -34,11 +34,14 @@ export default function ShowTimer() {
     const displayMinutes = calculatedMinutes < 10 ? `0${calculatedMinutes}` : calculatedMinutes;
 
     const timerButtonDisplay = timerState === STATUS.running ? "Stop" : "Start";
+    const timerButtonClass = "timer-btn"
+        + (timerState === STATUS.running ? " timer-stop" : "")
+        + (timerState === STATUS.pause ? " timer-start" : "")
 
     return (
         <div className="timer">
             <h2>{displayMinutes}:{displaySeconds}</h2>
-            <button className="timer-btn" onClick={toggleTimer}>{timerButtonDisplay}</button>
+            <button className={timerButtonClass} onClick={toggleTimer}>{timerButtonDisplay}</button>
         </div>
     )
 }

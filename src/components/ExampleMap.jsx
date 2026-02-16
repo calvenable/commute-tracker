@@ -19,7 +19,7 @@ L.Icon.Default.mergeOptions({
 
 function UpdateMapOnMovement() {
   const map = useMap();
-  const [position, setPosition] = useState(null);
+  // const [position, setPosition] = useState(null);
   const [route, setRoute] = useState([]);
 
   const circleRef = useRef(null);
@@ -53,7 +53,7 @@ function UpdateMapOnMovement() {
           }).addTo(map);
         }
 
-        setPosition(newPos);
+        // setPosition(newPos);
         setRoute((prev) => {
           const updated = [...prev, newPos];
           if (polylineRef.current) {

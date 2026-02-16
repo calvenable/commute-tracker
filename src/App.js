@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 function App() {
   return (
     <div className="App">
-      <h2>Commute Tracker</h2>
+      <h2>Commute Tracker v0.1.1</h2>
       <ExampleMap />
       <Timer />
     </div>

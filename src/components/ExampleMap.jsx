@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   MapContainer,
   useMap,
-  TileLayer,
-  Polyline,
-  Circle
+  TileLayer
 } from "react-leaflet";
 import L from "leaflet";
 
@@ -19,80 +17,80 @@ L.Icon.Default.mergeOptions({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png"
 });
 
-function PanToCurrentLocation() {
+function UpdateMapOnMovement() {
   const map = useMap();
+  const [position, setPosition] = useState(null);
+  const [route, setRoute] = useState([]);
+
+  const circleRef = useRef(null);
+  const polylineRef = useRef(null);
+
   useEffect(() => {
     if (!navigator.geolocation) {
       console.error("Geolocation is not supported by your browser.");
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        map.setView([latitude, longitude]);
-      },
-      (error) => {
-        console.error("Error getting location:", error);
-      }
-    );
-  }, [map]);
-
-  return null;
-}
-
-export default function RunTrackerMap() {
-  const [position, setPosition] = useState(null);
-  const [route, setRoute] = useState([]);
-
-  useEffect(() => {
-    // Watch GPS location in real time
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
         const newPos = [latitude, longitude];
+
+        if (!circleRef.current) {
+          circleRef.current = L.circle(newPos, {
+            radius: 6,
+            color: "blue",
+            fillColor: "blue",
+            fillOpacity: 1
+          }).addTo(map);
+          // TODO: Add a radius 12 circle around the dot.
+        }
+
+        if (!polylineRef.current) {
+          polylineRef.current = L.polyline([newPos], {
+            color: "blue",
+            weight: 5
+          }).addTo(map);
+        }
+
         setPosition(newPos);
-        setRoute((prev) => [...prev, newPos]);
+        setRoute((prev) => {
+          const updated = [...prev, newPos];
+          if (polylineRef.current) {
+            polylineRef.current.setLatLngs(updated);
+          }
+          return updated;
+        });
+        map.setView([latitude, longitude], 16);
+
       },
       (err) => console.error(err),
       { enableHighAccuracy: true }
     );
 
-    return () => navigator.geolocation.clearWatch(watchId);
-  }, []);
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
+  }, [map, route]);
 
-  if (!position) return <p>Getting your GPS location...</p>;
+  return null;
+
+  // if (!position) return <p>Getting your GPS location...</p>;
+}
+
+export default function RunTrackerMap() {
 
   return (
     <MapContainer
-      center={position}
-      zoom={16}
+      zoom="16"
       style={{ height: "400px", width: "100%" }}
     >
-		<TileLayer
-			url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-			attribution="&copy; OpenStreetMap contributors"
-		/>
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution="&copy; OpenStreetMap contributors"
+      />
 
-		{/* User's current location */}
-		<Circle
-			center={position}
-			radius={6}
-			color="blue"
-			fillColor="blue"
-			fillOpacity={1}
-		/>
-
-		<Circle
-			center={position}
-			radius={12}
-			color="blue"
-		/>
-
-		{/* Route polyline */}
-		<Polyline positions={route} color="blue" weight={5} />
-
-    <PanToCurrentLocation />
+      <UpdateMapOnMovement />
 		
     </MapContainer>
   );

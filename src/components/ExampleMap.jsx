@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   MapContainer,
+  useMap,
   TileLayer,
   Polyline,
   Circle
@@ -17,6 +18,28 @@ L.Icon.Default.mergeOptions({
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png"
 });
+
+function PanToCurrentLocation() {
+  const map = useMap();
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      console.error("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        map.setView([latitude, longitude]);
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+      }
+    );
+  }, [map]);
+
+  return null;
+}
 
 export default function RunTrackerMap() {
   const [position, setPosition] = useState(null);
@@ -68,6 +91,8 @@ export default function RunTrackerMap() {
 
 		{/* Route polyline */}
 		<Polyline positions={route} color="blue" weight={5} />
+
+    <PanToCurrentLocation />
 		
     </MapContainer>
   );

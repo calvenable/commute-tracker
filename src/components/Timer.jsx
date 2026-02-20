@@ -5,7 +5,7 @@ const STATUS = {
     running: 1
   }
 
-export default function ShowTimer() {
+export default function ShowTimer({toggleAction}) {
     const [seconds, setSeconds] = useState(0);
     const [timerState, setTimerState] = useState(STATUS.pause);
     const [timerInterval, setTimerInterval] = useState(null);
@@ -41,7 +41,7 @@ export default function ShowTimer() {
     return (
         <div className="timer">
             <h2>{displayMinutes}:{displaySeconds}</h2>
-            <button className={timerButtonClass} onClick={toggleTimer}>{timerButtonDisplay}</button>
+            <button className={timerButtonClass} onClick={toggleAction}>{timerButtonDisplay}</button>
         </div>
     )
 }

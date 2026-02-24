@@ -82,7 +82,7 @@ function UpdateMapOnMovement(position) {
   return null;
 }
 
-export default function RunTrackerMap(tools) {
+export default function RunTrackerMap({tools}) {
   let [position, setPosition] = useState(null);
   const [error, setError] = useState(null);
 

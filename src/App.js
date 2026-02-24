@@ -10,6 +10,7 @@ import "leaflet-draw/dist/leaflet.draw.css";
 function App() {
   const [showTool, setShowTool] = useState(true);
   const [tools, setTools] = useState(null);
+  const [message, setMessage] = useState("Start");
 
   function toggleRectangle() {
     if (showTool) {
@@ -17,10 +18,11 @@ function App() {
         rectangle: false,
         polygon: false,
         polyline: false,
-        circle: true,
+        circle: false,
         circlemarker: false,
         marker: false,
       });
+      setMessage("Showing tool");
     } else {
       setTools({
         rectangle: false,
@@ -30,6 +32,7 @@ function App() {
         circlemarker: false,
         marker: false,
       });
+      setMessage("Hiding tool");
     }
     setShowTool((prev) => !prev);
   }
@@ -37,6 +40,7 @@ function App() {
   return (
     <div className="App">
       <h2>Commute Tracker v0.1.1</h2>
+      <h3>{message}</h3>
       <TrackerMap tools={tools}/>
       <Timer toggleAction={toggleRectangle}/>
     </div>

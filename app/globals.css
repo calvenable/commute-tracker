@@ -66,3 +66,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+.stroke-primary svg {
+  stroke: hsl(var(--primary));
+}
+
+.stroke-primary-inactive svg {
+  stroke: hsl(var(--muted-foreground));
+}
+
+.fill-primary svg {
+  fill: hsl(var(--primary));
+}
+
+.fill-primary-inactive svg {
+  fill: hsl(var(--muted-foreground));
+}

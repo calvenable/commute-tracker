@@ -1,4 +1,5 @@
 import { AuthButton } from "@/components/auth-button";
+import BottomNav from "@/components/bottom-nav";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -30,6 +31,7 @@ export default function ProtectedLayout({
           {children}
         </div>
       </div>
+      <BottomNav/>
     </main>
   );
 }

@@ -1,19 +1,19 @@
-import { InfoIcon } from "lucide-react";
+'use client';
 
-export default function Record() {
+import dynamic from "next/dynamic";
+import 'leaflet/dist/leaflet.css';
+
+const ZonesMap = dynamic(() => import("@/components/maps/ZoneDisplayMap"), {
+  ssr: false,
+  loading: () => <p>Loading map...</p>,
+  // TODO: Replace loading with skeleton component
+});
+
+export default function Zones() {
+
   return (
     <>
-      <div className="flex-1 w-full flex flex-col gap-12">
-        <div className="w-full">
-          <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
-            <InfoIcon size="16" strokeWidth={2} />
-            You are on the Zones page
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 items-start">
-
-        </div>
-      </div>
+      <ZonesMap />
     </>
   );
 }

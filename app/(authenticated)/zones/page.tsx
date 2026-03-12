@@ -10,7 +10,6 @@ const ZonesMap = dynamic(() => import("@/components/maps/ZoneDisplayMap"), {
 });
 
 export default function Zones() {
-
   return (
     <>
       <ZonesMap />

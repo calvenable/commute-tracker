@@ -2,6 +2,9 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import L from "leaflet";
 
 export default function ZoneDisplayMap() {
+    // TODO: Get list of user's zone polygons & home/work locations
+    // Render all shapes on the map
+    // Zoom so all shapes are in view
     return (
     <MapContainer
         center={[51.505, -0.09] as L.LatLngExpression}
